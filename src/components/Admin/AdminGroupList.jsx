@@ -3,9 +3,9 @@ import {
   getGroupList,
   deleteGroup,
   deleteGroups,
-} from '../../services/adminService';
-import { formatDate } from '../common/formatDate.jsx';
-import '../../css/Admin/AdminUser.css'; // 관리자 스타일 CSS 파일
+} from '../../services/adminService.js';
+import { formatDate } from '../common/FormatDate.jsx';
+import '../../css/admin/AdminUser.css'; // 관리자 스타일 CSS 파일
 
 const AdminGroupList = () => {
   const [groups, setGroups] = useState([]);

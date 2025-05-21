@@ -1,5 +1,5 @@
 import React from 'react';
-import MyCourseList from '../components/MyCourse/MyCourseList';
+import MyCourseList from '../components/myCourse/MyCourseList';
 
 const MyCoursePage = () => {
   return <MyCourseList />;

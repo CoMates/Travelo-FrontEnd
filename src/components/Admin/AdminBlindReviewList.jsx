@@ -4,8 +4,8 @@ import {
   blindReview,
   getAllReviews,
 } from '../../services/adminService';
-import { formatDate } from '../common/formatDate';
-import '../../css/Admin/AdminReview.css';
+import { formatDate } from '../common/FormatDate';
+import '../../css/admin/AdminReview.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminCourseList from '../../components/Admin/AdminCourseList';
+import AdminCourseList from '../../components/admin/AdminCourseList';
 
 const AdminCoursePage = () => {
   return (

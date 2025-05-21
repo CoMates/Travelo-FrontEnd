@@ -4,10 +4,10 @@ import {
   reviewsList,
   updateReview,
   deleteReview,
-} from '../../services/myReviewService';
-import MyPageSidebar from '../common/MyPageSidebar';
-import { formatDate } from '../common/formatDate';
-import '../../css/myReviewList.css';
+} from '../../services/myReviewService.js';
+import MyPageSidebar from '../common/MyPageSidebar.jsx';
+import { formatDate } from '../common/FormatDate.jsx';
+import '../../css/MyReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,

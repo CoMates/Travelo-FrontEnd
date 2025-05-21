@@ -4,9 +4,9 @@ import {
   deleteUser,
   deleteUsers,
 } from '../../services/adminService';
-import { formatDate } from '../common/formatDate';
+import { formatDate } from '../common/FormatDate';
 import { useNavigate } from 'react-router-dom';
-import '../../css/Admin/AdminUser.css';
+import '../../css/admin/AdminUser.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 

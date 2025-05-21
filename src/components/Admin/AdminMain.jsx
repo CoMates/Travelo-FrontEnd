@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAdminData } from '../../services/adminService';
 import { Link } from 'react-router-dom';
-import '../../css/Admin/AdminMain.css';
+import '../../css/admin/AdminMain.css';
 
 const AdminMain = () => {
   const [data, setData] = useState(null);

@@ -7,8 +7,8 @@ import {
   getUserReviews,
   getUserGroups,
 } from '../../services/adminService';
-import { formatDate } from '../common/formatDate';
-import '../../css/Admin/AdminUserDetail.css';
+import { formatDate } from '../common/FormatDate';
+import '../../css/admin/AdminUserDetail.css';
 
 const AdminUserDetail = () => {
   const { userSeq } = useParams();

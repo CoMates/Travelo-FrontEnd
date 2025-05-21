@@ -1,5 +1,5 @@
 import React from 'react';
-import ReviewList from '../components/Review/MyReview';
+import ReviewList from '../components/review/MyReview';
 
 const MyReviewPage = () => {
   return <ReviewList />;

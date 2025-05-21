@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminGroupList from '../../components/Admin/AdminGroupList';
+import AdminGroupList from '../../components/admin/AdminGroupList';
 
 const AdminGroupPage = () => {
   return <AdminGroupList />;

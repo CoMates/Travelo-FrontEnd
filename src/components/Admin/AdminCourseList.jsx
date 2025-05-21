@@ -5,8 +5,8 @@ import {
   deleteCourse,
   deleteCourses,
 } from '../../services/adminService';
-import { formatDate } from '../common/formatDate';
-import '../../css/Admin/AdminCourse.css';
+import { formatDate } from '../common/FormatDate';
+import '../../css/admin/AdminCourse.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 

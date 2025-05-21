@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { myCourses, deleteCourse } from '../../services/MyCourseService';
+import { myCourses, deleteCourse } from '../../services/myCourseService';
 import { useNavigate } from 'react-router-dom';
 import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
-import { formatDate } from '../common/formatDate';
-import '../../css/myCourseList.css';
+import { formatDate } from '../common/FormatDate';
+import '../../css/MyCourseList.css';
 import MyPageSidebar from '../common/MyPageSidebar';
 import CourseGroupTapBar from '../common/CourseGroupTapBar';
 import MyCoursePagination from '../common/pagenation/MyCoursePagination';

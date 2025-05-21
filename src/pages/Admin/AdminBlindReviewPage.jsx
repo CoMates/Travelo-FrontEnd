@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminBlindReviewList from '../../components/Admin/AdminBlindReviewList';
+import AdminBlindReviewList from '../../components/admin/AdminBlindReviewList';
 
 const AdminBlindReviewPage = () => {
   return <AdminBlindReviewList />;

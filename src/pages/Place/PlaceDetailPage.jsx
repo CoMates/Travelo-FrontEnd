@@ -3,7 +3,7 @@ import usePlaceDetails from '../../hooks/usePlaceDetails';
 import LoadingError from '../../components/common/LoadingError';
 import PlaceDetailInfo from '../../components/PlaceDetailInfo';
 import MapComponent from '../../components/common/MapComponent';
-import styles from '../../styles/pages/Place/PlaceDetail.module.css';
+import styles from '../../styles/pages/place/PlaceDetail.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 
