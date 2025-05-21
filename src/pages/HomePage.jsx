@@ -10,12 +10,15 @@ import { useNavigate } from 'react-router-dom';
 import { Autoplay, EffectFade, Navigation } from 'swiper/modules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const HomePage = () => {
   const [data, setData] = useState({
     courses: [],
     places: [],
   });
+
+  const [place, setPlace] = useState(null);
 
   const navigate = useNavigate();
 
@@ -33,12 +36,18 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get('/travelo/main');
+        const response = await axios.get(
+          'http://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=6UppuGjdlACs04jaoy3iLUHIwin6rimEc2uryR%2Bpkh3DKGfD84CjXt%2F4IxcWe3SIvVGMkhaSPG5jmpnI7StFag%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&listYN=Y&&arrange=A&contentTypeId=12&keyword=%EA%B0%95%EC%9B%90&_type=json'
+        );
+        console.log('작동1');
         console.log(response.data);
-        setData({
-          courses: response.data.courses,
-          places: response.data.places,
-        });
+        console.log('작동');
+        const item = response.data.response.body.items.item[0];
+        console.log(response);
+        console.log(item);
+        console.log(item.title);
+        setPlace(item);
+        console.log(place.title);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -110,6 +119,18 @@ const HomePage = () => {
           </SwiperSlide>
         </Swiper>
 
+        <div>
+          <h2>
+            <p>테스트</p>
+          </h2>
+          <p>{place.title}</p>
+          <img
+            src={place.firstimage}
+            alt={place.title}
+            style={{ maxWidth: '100%' }}
+          />
+        </div>
+
         {/* 인기 장소 */}
         <h2>
           <p>&#x2728;</p> 지금 주목받는 인기 장소
@@ -121,7 +142,7 @@ const HomePage = () => {
           modules={[Autoplay]}
           className={styles.swiper}
         >
-          {data.places.slice(0, 6).map((place, index) => (
+          {/* {data.places.slice(0, 6).map((place, index) => (
             <SwiperSlide key={index} onClick={() => handlePlaceClick(place)}>
               <div className={styles.placeSlide}>
                 <div className={styles.placeImageContainer}>
@@ -147,7 +168,7 @@ const HomePage = () => {
                 </div>
               </div>
             </SwiperSlide>
-          ))}
+          ))} */}
         </Swiper>
 
         <div className={styles.hc}>
@@ -161,7 +182,7 @@ const HomePage = () => {
             modules={[Autoplay]}
             className={styles.swiper}
           >
-            {data.courses.slice(0, 6).map((course, index) => (
+            {/* {data.courses.slice(0, 6).map((course, index) => (
               <SwiperSlide
                 key={index}
                 onClick={() => handleCourseClick(course)}
@@ -210,7 +231,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </SwiperSlide>
-            ))}
+            ))} */}
           </Swiper>
         </div>
         {/* 인기 코스 */}
