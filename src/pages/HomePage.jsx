@@ -123,12 +123,12 @@ const HomePage = () => {
           <h2>
             <p>테스트</p>
           </h2>
-          <p>{place.title}</p>
+          {/* <p>{place.title}</p>
           <img
             src={place.firstimage}
             alt={place.title}
             style={{ maxWidth: '100%' }}
-          />
+          /> */}
         </div>
 
         {/* 인기 장소 */}
