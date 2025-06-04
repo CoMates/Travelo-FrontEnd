@@ -55,6 +55,19 @@ const MyCourseList = () => {
     return title;
   };
 
+  // 등록된 코스가 없는 경우 예외 처리
+  if (courses.length === 0) {
+    return (
+      <div className="grid-container">
+        <MyPageSidebar />
+        <div className="courselist">
+          <CourseGroupTapBar />
+          <div className="empty-message">등록된 코스가 없습니다.</div>
+        </div>
+      </div>
+    );
+  }
+
   if (error)
     return <div>코스를 불러오는 중 오류가 발생했습니다: {error.message}</div>;
 
