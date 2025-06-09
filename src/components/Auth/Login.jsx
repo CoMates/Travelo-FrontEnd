@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/Auth.module.css';
+import styles from '../../styles/auth.module.css';
 import { useNavigate } from 'react-router-dom';
 import KakaoLoginButton from '../socialAuth/KakaoLoginButton';
 import GoogleLoginButton from '../socialAuth/GoogleLoginButton';
