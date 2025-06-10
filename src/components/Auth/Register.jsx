@@ -78,7 +78,7 @@ const Register = ({ onRegister, onMailCheck, onVerifyCodeCheck }) => {
       return;
     }
 
-    console.log('success veri', verifyCodeCheckSuccess);
+    console.log('success veri', verifyCodeCheckSuccess); //회원가입 시도: true
 
     if (verifyCodeCheckSuccess) {
       const response = await onRegister(username, password, passwordCheck, tel);

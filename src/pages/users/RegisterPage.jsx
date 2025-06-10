@@ -12,7 +12,10 @@ const RegisterPage = () => {
         rePassword,
         tel
       );
-      console.log('Register response: ', register);
+      console.log('register: ', register);
+      console.log('reponse:', response);
+      console.log('response.status', response.status);
+      console.log('response.username:', response.valueOf(username));
       return response;
     } catch (error) {
       console.error('Register error:', error); // 오류 로그

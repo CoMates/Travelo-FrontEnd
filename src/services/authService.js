@@ -19,18 +19,39 @@ const register = async (username, password, passwordCheck, tel) => {
         },
       });
       console.log('회원가입 성공');
-      console.log(response.data);
+      console.log(response.data); //회원가입 시도: '가입 되었습니다' 출력
       if (response.data === '가입 되었습니다') {
-        return true;
+        console.log('if문 true');
+        return {
+          success: true,
+          status: response.status,
+          data: response.data,
+          message: '회원가입 성공',
+        };
       }
-      return false;
+      console.log('if문 외');
+      return {
+        success: false,
+        status: response.status,
+        data: response.data,
+        message: '회원가입 실패',
+      };
     } catch (error) {
       console.error('회원가입 실패 : ', error);
-      return false;
+      return {
+        success: false,
+        status: response.status,
+        data: response.data,
+        message: '회원가입 오류',
+      };
     }
   } else {
     console.error('인증 실패 :  verifyCodeCheck 실패', error);
-    return false;
+    return {
+      success: false,
+      status: 400,
+      message: '인증 실패',
+    };
   }
 };
 
@@ -124,6 +145,7 @@ const onCheckUser = async (username) => {
 
 const resetPassword = async (newPassword, confirmPassword, username) => {
   sessionStorage.setItem('username', username);
+  console.log('이번엔 또 걸리네');
   try {
     const resetPasswordResponse = await axiosInstance.post(
       '/travelo/resetPassword',
@@ -136,10 +158,10 @@ const resetPassword = async (newPassword, confirmPassword, username) => {
       }
     );
     console.log('비밀번호 재설정 응답: ', resetPasswordResponse.data);
-    return resetPasswordResponse.data;
+    return resetPasswordResponse;
   } catch (error) {
     console.error('resetPassword Error', error);
-    throw error.response;
+    throw error;
   }
 };
 

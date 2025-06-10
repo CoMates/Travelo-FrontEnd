@@ -13,7 +13,11 @@ function Header() {
   const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
-    console.log('Header re-rendered with isAuthenticated:', isAuthenticated);
+    console.log(
+      'Header re-rendered with isAuthenticated:',
+      isAuthenticated,
+      user
+    );
   }, [isAuthenticated, user]);
 
   return (

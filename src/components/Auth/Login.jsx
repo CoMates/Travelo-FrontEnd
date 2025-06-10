@@ -24,8 +24,10 @@ const Login = ({ onLogin }) => {
       console.log('로그인 성공:', success);
 
       if (success.status === 200) {
+        if (onLogin) {
+          onLogin(success.data);
+        }
         navigate('/home');
-        window.location.reload();
       } else {
         handleLoginError(success);
       }
