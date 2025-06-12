@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
-import styles from '../../styles/auth.module.css';
+import styles from '../../styles/Auth.module.css';
 
 const GoogleLoginButton = () => {
   const googleClientId = import.meta.env.VITE_API_GOOGLE_CLIENT_ID;
