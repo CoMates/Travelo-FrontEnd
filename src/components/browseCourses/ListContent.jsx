@@ -33,11 +33,10 @@ const ListContent = () => {
           </div>
         </div>
       </div>
+      {/* item.place.imageFile1 || 이게 place에서 이미지 불러오느라 */}
       <div className={styles['list-content-wrap']}>
         {courses.map((course) => {
-          const images = course.courseList
-            .slice(0, 4)
-            .map((item) => item.place.imageFile1 || '');
+          const images = course.courseList.slice(0, 4).map((item) => '');
           return (
             <CourseCard
               key={course.courseSeq}

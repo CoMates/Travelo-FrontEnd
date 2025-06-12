@@ -27,6 +27,7 @@ const Login = ({ onLogin }) => {
         if (onLogin) {
           onLogin(success.data);
         }
+
         navigate('/home');
       } else {
         handleLoginError(success);

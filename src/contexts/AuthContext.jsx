@@ -64,8 +64,11 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.setItem('accessToken', token.accessToken);
         sessionStorage.setItem('refreshToken', token.refreshToken);
 
-        const decodedToken = jwtDecode(sessionStorage.accessToken);
-        setUser(decodedToken);
+        const LoginUser = authService.loginUserCheck(
+          sessionStorage.accessToken
+        );
+
+        setUser(LoginUser);
 
         setIsAuthenticated(true);
       }
@@ -100,7 +103,6 @@ export const AuthProvider = ({ children }) => {
     // setAccessToken(null);
     setIsAuthenticated(false);
     setUser(null);
-    window.location.href = '/users/login';
   };
 
   return (

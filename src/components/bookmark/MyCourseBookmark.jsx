@@ -66,7 +66,8 @@ const MyCourseBookmark = () => {
                 <div className={styles['image-container']}>
                   {courseList.slice(0, 4).map((item, index) => (
                     <div key={index} className={styles['image-item']}>
-                      {item.place.imageFile1 ? (
+                      {/* 이미지 불러오는 코드로 place 오류 */}
+                      {/* {item.place.imageFile1 ? (
                         <img
                           src={item.place.imageFile1}
                           alt={item.place.title}
@@ -76,7 +77,7 @@ const MyCourseBookmark = () => {
                         <div className={styles['image-placeholder']}>
                           <img src="/free-sticker-van-13719277.png" />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   ))}
                 </div>

@@ -82,6 +82,25 @@ const login = async (username, password) => {
   }
 };
 
+const loginUserCheck = async (accessToken) => {
+  try {
+    const response = await axios.get('/travelo/main', {
+      accessToken: accessToken,
+    });
+
+    if (response.getItem('loginUser')) {
+      const user = response.getItem('loginUser');
+      console.log('loginCheckUser 성공');
+      return user;
+    } else {
+      console.log('loginCheckUser 실패');
+    }
+  } catch (error) {
+    console.error('loginCheckUser error', error);
+    throw error;
+  }
+};
+
 const logout = async () => {
   const accessToken = sessionStorage.getItem('accessToken');
 
@@ -172,4 +191,5 @@ export default {
   isAuthenticated,
   resetPassword,
   onCheckUser,
+  loginUserCheck,
 };

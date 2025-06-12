@@ -26,19 +26,28 @@ const CourseMiniCard = ({ place }) => {
   return (
     <div className={styles.card} onClick={handleCardClick}>
       <div className={styles['image-container']}>
-        {place.imageFile1 ? (
+        {/* {place.imageFile1 ? (
           <img
             src={place.imageFile1}
             alt={place.title}
             className={styles.image}
           />
-        ) : (
-          <div className={styles['image-placeholder']}>
-            <FontAwesomeIcon icon={faImage} size="2x" color="#ccc" />
-          </div>
-        )}
+        ) : ( */}
+        <div className={styles['image-placeholder']}>
+          <FontAwesomeIcon icon={faImage} size="2x" color="#ccc" />
+        </div>
+        {/* )} */}
       </div>
       <div className={styles.details}>
+        <h4 className={styles.name}>1</h4>
+        <p className={styles.address}>1</p>
+        <div className={styles.footer}>
+          <span className={styles.likes}>
+            <FontAwesomeIcon icon={faHeart} /> 1
+          </span>
+        </div>
+      </div>
+      {/* <div className={styles.details}>
         <h4 className={styles.name}>{place.title}</h4>
         <p className={styles.address}>{place.address}</p>
         <div className={styles.footer}>
@@ -46,7 +55,7 @@ const CourseMiniCard = ({ place }) => {
             <FontAwesomeIcon icon={faHeart} /> {place.likeCount}
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
