@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
-import styles from '../../styles/Auth.module.css';
+import styles from '../../styles/auth.module.css';
 import axios from 'axios';
 
 const KakaoLoginButton = () => {

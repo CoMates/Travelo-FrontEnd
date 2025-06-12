@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../styles/Auth.module.css';
+import styles from '../../styles/auth.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useMailCheck from '../../hooks/useMailCheck';
 import useVerifyCodeCheck from '../../hooks/useVerifyCodeCheck';
@@ -25,14 +25,13 @@ const ResetPassword = ({ onResetPassword, onMailCheck, onVerifyCodeCheck }) => {
   // 메일 체크해서 성공인지
   const [mailCheckSuccess, handleMailCheck] = useMailCheck(onMailCheck);
 
-  console.log('mailCheckSuccess', mailCheckSuccess);
-
   // 인증번호 체크 결과
   const [verifyCodeCheckSuccess, handleVerifyCodeCheck] =
     useVerifyCodeCheck(onVerifyCodeCheck);
   // 인증번호 에러 메시지
 
   const [varifyCodeError, setVarifyCodeError] = useState('');
+  const [passwordEqualError, setPasswordEqualError] = useState('');
 
   useEffect(() => {
     console.log('mailCheckSuccess: ', mailCheckSuccess);
@@ -67,14 +66,20 @@ const ResetPassword = ({ onResetPassword, onMailCheck, onVerifyCodeCheck }) => {
           username
         );
 
+        console.log('response.data:::::', response.message);
+        console.log(response);
+
         // api 결과가 제대로 들어온 경우
-        if (response) {
+        if (response.status === 200) {
           console.log('비밀번호 재설정 성공');
           // 로그인으로 이동
           navigate('/users/login');
           // api 결과가 제대로 들어오지 않은 경우
         } else {
           // 제대로 들어오지 않은 경우
+          if (response.message.includes('기존 비밀번호는 사용할 수 없습니다')) {
+            setPasswordEqualError(response.message);
+          }
           console.log('비밀번호 재설정 실패');
         }
       } else {
@@ -86,16 +91,28 @@ const ResetPassword = ({ onResetPassword, onMailCheck, onVerifyCodeCheck }) => {
     } catch (error) {
       console.error('문제 발생:', error);
     }
-    const goToLogin = (e) => {
+  };
+
+  const goToLogin = (e) => {
+    e.preventDefault();
+    navigate('/users/login');
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
       e.preventDefault();
-      navigate('/users/login');
-    };
+    }
   };
 
   return (
     <div className={styles['auth-content']}>
-      <form onSubmit={handleSubmit} className={styles['form-content-reset']}>
+      <form
+        onSubmit={handleSubmit}
+        className={styles['form-content-reset']}
+        onKeyDown={handleKeyDown}
+      >
         <button
+          type="button"
           onClick={(e) => {
             goToLogin(e);
           }}
@@ -190,6 +207,11 @@ const ResetPassword = ({ onResetPassword, onMailCheck, onVerifyCodeCheck }) => {
                   <span className={styles['error-message']}>
                     {passwordConfirmError}
                   </span>
+                )) ||
+                (passwordEqualError && (
+                  <span className={styles['error-message']}>
+                    {passwordEqualError}.
+                  </span>
                 ))}
               <input
                 type="password"
@@ -210,9 +232,7 @@ const ResetPassword = ({ onResetPassword, onMailCheck, onVerifyCodeCheck }) => {
             </div>
             <div className={styles['space']}></div>
             <div className={styles['btn-wrap']}>
-              <button onClick={handleSubmit} className={styles['btn-point']}>
-                비밀번호 재설정
-              </button>
+              <button className={styles['btn-point']}>비밀번호 재설정</button>
             </div>
           </div>
         )}

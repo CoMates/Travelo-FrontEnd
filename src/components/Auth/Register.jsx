@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/Auth.module.css';
+import styles from '../../styles/auth.module.css';
 import { useNavigate } from 'react-router-dom';
 import useMailCheck from '../../hooks/useMailCheck';
 import useValidation from '../../hooks/useValidation';
@@ -78,17 +78,22 @@ const Register = ({ onRegister, onMailCheck, onVerifyCodeCheck }) => {
       return;
     }
 
-    console.log('success veri', verifyCodeCheckSuccess);
+    console.log('success veri', verifyCodeCheckSuccess); //회원가입 시도: true
 
     if (verifyCodeCheckSuccess) {
       const response = await onRegister(username, password, passwordCheck, tel);
       setVerifyCodeError('');
       console.log('코드체크: success', verifyCodeCheckSuccess);
 
-      if (response.status === 200 && response) {
+      //response가 코드 자체를 반환하고 있음.
+      //인증번호 확인하지 않고 회원가입 눌렀을 시 인증번호가 일치하지 않는다고 뜸.
+      //이거 메인에 고쳐져있던 것 같기도...
+
+      if (response.status === 200) {
         navigate('/users/login');
       } else {
         console.log('회원가입 실패');
+        //회원가입에 실패한 경우에 대해서 무반응 말고 다른 반응도 있어야 할듯
       }
     } else {
       setVerifyCodeError('인증번호가 일치하지 않습니다.');

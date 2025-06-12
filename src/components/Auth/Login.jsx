@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/Auth.module.css';
+import styles from '../../styles/auth.module.css';
 import { useNavigate } from 'react-router-dom';
 import KakaoLoginButton from '../socialAuth/KakaoLoginButton';
 import GoogleLoginButton from '../socialAuth/GoogleLoginButton';
@@ -24,8 +24,10 @@ const Login = ({ onLogin }) => {
       console.log('로그인 성공:', success);
 
       if (success.status === 200) {
+        if (onLogin) {
+          onLogin(success.data);
+        }
         navigate('/home');
-        window.location.reload();
       } else {
         handleLoginError(success);
       }

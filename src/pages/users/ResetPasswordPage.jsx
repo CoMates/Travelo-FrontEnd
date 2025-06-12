@@ -55,7 +55,11 @@ const ResetPasswordPage = () => {
       return response;
     } catch (error) {
       console.error('Reset password error:', error); // 오류 로그
-      return false;
+      return {
+        success: false,
+        status: 400,
+        message: error.response.data,
+      };
     }
   };
 

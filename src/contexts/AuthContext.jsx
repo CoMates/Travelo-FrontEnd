@@ -8,6 +8,7 @@ import React, {
 import axiosInstance from '../utils/axiosInstance';
 import authService from '../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -57,17 +58,22 @@ export const AuthProvider = ({ children }) => {
       const response = await authService.login(email, password);
       const token = response.data;
 
-      console.log('token::', response);
       console.log('token', token);
 
-      sessionStorage.setItem('accessToken', token.accessToken);
-      sessionStorage.setItem('refreshToken', token.refreshToken);
+      if (response.status === 200) {
+        sessionStorage.setItem('accessToken', token.accessToken);
+        sessionStorage.setItem('refreshToken', token.refreshToken);
+
+        const decodedToken = jwtDecode(sessionStorage.accessToken);
+        setUser(decodedToken);
+
+        setIsAuthenticated(true);
+      }
 
       console.log('엑토', sessionStorage.getItem('accessToken'));
       // setAccessToken(token.accessToken);
       // setRefreshToken(token.refreshToken);
-      setIsAuthenticated(true);
-      setUser(token.user);
+
       return response;
     } catch (error) {
       console.error('로그인 요청 중 오류 발생: ', error);
