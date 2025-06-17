@@ -29,18 +29,18 @@ const ListContent = () => {
       </div>
       {places.map((place) => (
         <PlaceCard
-          key={place.placeSeq}
-          placeSeq={place.placeSeq}
-          contentId={place.contentId}
-          image={place.imageFile1}
-          type={place.type}
+          key={place.contentid}
+          placeSeq={place.contentid}
+          contentId={place.contentid}
+          image={place.firstimage || place.firstimage2 || ''}
+          type={place.contenttypeid}
           title={place.title}
-          address={place.address}
+          address={place.addr1}
           views={place.viewCount}
           likes={place.likeCount}
           bookmarks={place.bookmarks || 0}
-          latitude={place.latitude}
-          longitude={place.longitude}
+          latitude={place.mapx}
+          longitude={place.mapy}
         />
       ))}
       <Pagination />

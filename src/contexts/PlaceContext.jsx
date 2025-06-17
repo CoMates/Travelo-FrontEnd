@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
-import axiosInstance from '../utils/axiosInstance';
+import axiosInstance, { axiosInstanceTour } from '../utils/axiosInstance';
 import { fetchBookmarks } from '../services/bookmarkService';
+
+const tourAPIKey = import.meta.env.VITE_API_TOUR_API_KEY;
 
 const PlaceContext = createContext();
 
@@ -18,26 +20,59 @@ const PlaceProvider = ({ children }) => {
     content: '',
     area: '',
   });
+  const [placeRequires, setPlaceRequires] = useState({
+    numOfRows: 15,
+    pageNo: 0,
+    MobileOS: 'WEB',
+    MobileApp: 'travelo',
+    arrange: 'A',
+  });
+  const placeContentTypes = [12, 14, 32, 38, 39];
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
   const fetchPlaces = async (updatedFilters) => {
+    console.log('serviceKey:', tourAPIKey);
+
+    const params = {
+      ...placeRequires,
+      serviceKey: tourAPIKey,
+      contentTypeId: 12,
+      _type: 'json',
+    };
+
+    console.log('params:', params);
     setLoading(true);
     try {
-      const response = await axiosInstance.get('/travelo/place/list', {
-        params: {
-          ...filters,
-          ...updatedFilters,
-        },
+      const response = await axiosInstanceTour.get('areaBasedList2', {
+        params,
       });
-      setPlaces(response.data.paging.content);
-      setTotalPages(response.data.paging.totalPages);
+      setPlaces(response.data.response.body.items.item);
+      setTotalPages(response.data);
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
     }
   };
+
+  // const fetchPlaces = async (updatedFilters) => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axiosInstance.get('/travelo/place/list', {
+  //       params: {
+  //         ...filters,
+  //         ...updatedFilters,
+  //       },
+  //     });
+  //     setPlaces(response.data.paging.content);
+  //     setTotalPages(response.data.paging.totalPages);
+  //   } catch (error) {
+  //     setError(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const fetchUserBookmarks = useCallback(async (accessToken) => {
     try {

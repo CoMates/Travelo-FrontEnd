@@ -11,6 +11,13 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+const axiosInstanceTour = axios.create({
+  baseURL: 'http://apis.data.go.kr/B551011/KorService2/',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 let isRefreshing = false;
 let refreshSubscribers = [];
 
@@ -105,3 +112,5 @@ const isTokenExpired = (token) => {
 };
 
 export default axiosInstance;
+
+export { axiosInstanceTour };
