@@ -47,7 +47,7 @@ const PlaceProvider = ({ children }) => {
         params,
       });
       setPlaces(response.data.response.body.items.item);
-      setTotalPages(response.data);
+      setTotalPages(response.data.response.body.totalCount);
     } catch (error) {
       setError(error);
     } finally {
