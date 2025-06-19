@@ -157,9 +157,6 @@ const PlaceCard = ({
         </div>
         <div className={styles.icons}>
           <div className={styles.wrap}>
-            <span>
-              <FontAwesomeIcon icon={faEye} /> {views}
-            </span>
             <span
               onClick={handleLike}
               className={`${styles['heart-icon']} ${

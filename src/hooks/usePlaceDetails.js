@@ -25,25 +25,25 @@ const usePlaceDetails = (contentId, type, placeSeq) => {
       }
     };
 
-    const increaseViewCount = async () => {
-      try {
-        await axios.post(
-          `http://localhost:8080/travelo/place/detail/${placeSeq}`,
-          {},
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-      } catch (error) {
-        console.error('Error increasing view count:', error);
-      }
-    };
+    // const increaseViewCount = async () => {
+    //   try {
+    //     await axios.post(
+    //       `http://localhost:8080/travelo/place/detail/${placeSeq}`,
+    //       {},
+    //       {
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         withCredentials: true,
+    //       }
+    //     );
+    //   } catch (error) {
+    //     console.error('Error increasing view count:', error);
+    //   }
+    // };
 
     fetchPlaceDetails();
-    increaseViewCount();
+    // increaseViewCount();
   }, [contentId, type, placeSeq]);
 
   return { placeDetails, loading, error };
