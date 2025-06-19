@@ -37,7 +37,6 @@ const PlaceProvider = ({ children }) => {
     const params = {
       ...placeRequires,
       serviceKey: tourAPIKey,
-      contentTypeId: 12,
       _type: 'json',
     };
 
