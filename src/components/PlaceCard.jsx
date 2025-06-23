@@ -34,7 +34,10 @@ const PlaceCard = ({
   longitude,
   latitude,
 }) => {
-  const [currentLikes, setCurrentLikes] = useState(likes);
+  const [currentLikes, setCurrentLikes] = useState(Number(likes) || 0);
+  useEffect(() => {
+    setCurrentLikes(Number(likes) || 0);
+  }, [likes]);
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -71,6 +74,7 @@ const PlaceCard = ({
     }
 
     try {
+      console.log('Current Likes:', currentLikes, typeof currentLikes);
       const updatedLikeYn = await likePlace(placeSeq, accessToken);
 
       if (updatedLikeYn === 'Y') {

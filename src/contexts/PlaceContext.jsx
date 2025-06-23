@@ -46,7 +46,28 @@ const PlaceProvider = ({ children }) => {
       const response = await axiosInstanceTour.get('areaBasedList2', {
         params,
       });
-      setPlaces(response.data.response.body.items.item);
+      const tourPlaces = response.data.response.body.items.item;
+
+      // contentId별 좋아요 수 가져오기
+      const likesResponse = await axiosInstance.get('/travelo/placeLikeCount');
+      const likesArray = likesResponse.data.likeCount;
+
+      const likesMap = {};
+      likesArray.forEach(({ content_id, like_count }) => {
+        likesMap[content_id] = like_count;
+      });
+
+      const placesWithLikes = tourPlaces.map((place) => {
+        const contentId =
+          place.content_id || place.contentid || place.contentID;
+        return {
+          ...place,
+          contentId,
+          likeCount: likesMap[contentId] || 0,
+        };
+      });
+
+      setPlaces(placesWithLikes);
       setTotalPages(response.data.response.body.totalCount);
     } catch (error) {
       setError(error);
