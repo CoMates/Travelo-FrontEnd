@@ -85,7 +85,7 @@
   justify-content: flex-end;
 }
 
-.icons .wrap {
+.wrap {
   display: flex;
   gap: 16px;
   padding: 5px 10px;

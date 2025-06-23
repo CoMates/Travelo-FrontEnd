@@ -76,24 +76,6 @@ const PlaceProvider = ({ children }) => {
     }
   };
 
-  // const fetchPlaces = async (updatedFilters) => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axiosInstance.get('/travelo/place/list', {
-  //       params: {
-  //         ...filters,
-  //         ...updatedFilters,
-  //       },
-  //     });
-  //     setPlaces(response.data.paging.content);
-  //     setTotalPages(response.data.paging.totalPages);
-  //   } catch (error) {
-  //     setError(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const fetchUserBookmarks = useCallback(async (accessToken) => {
     try {
       const bookmarks = await fetchBookmarks(accessToken);

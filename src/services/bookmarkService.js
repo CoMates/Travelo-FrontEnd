@@ -1,9 +1,9 @@
 import axiosInstance from '../utils/axiosInstance';
 
-export const addBookmark = async (placeSeq, accessToken) => {
+export const addBookmark = async (contentId, accessToken) => {
   try {
     const response = await axiosInstance.post(
-      `/user/placebookmarks/add?placeSeq=${placeSeq}`,
+      `/user/placebookmarks/add?contentId=${contentId}`,
       {},
       {
         headers: {
@@ -11,6 +11,7 @@ export const addBookmark = async (placeSeq, accessToken) => {
         },
       }
     );
+
     return response.data;
   } catch (error) {
     console.error('북마크 추가 실패', error);
@@ -18,10 +19,10 @@ export const addBookmark = async (placeSeq, accessToken) => {
   }
 };
 
-export const removeBookmark = async (placeSeq, accessToken) => {
+export const removeBookmark = async (contentId, accessToken) => {
   try {
     const response = await axiosInstance.delete(
-      `/user/placebookmarks/remove?placeSeq=${placeSeq}`,
+      `/user/placebookmarks/remove?contentId=${contentId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

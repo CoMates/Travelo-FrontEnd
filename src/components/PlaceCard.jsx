@@ -48,20 +48,24 @@ const PlaceCard = ({
     fetchUserBookmarks,
   } = useContext(PlaceContext);
 
+  // 1. 최초 마운트 시 북마크 불러오기 1회만
   useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken');
 
     if (accessToken) {
       fetchUserBookmarks(accessToken);
     }
-  }, [fetchUserBookmarks]);
+  }, []);
 
+  // 2. userBookmarks가 빈 배열일 땐 setBookmarked 무시
   useEffect(() => {
+    if (!userBookmarks || userBookmarks.length === 0) return;
+
     const isBookmarked = userBookmarks.some(
-      (bookmark) => bookmark.place.placeSeq === placeSeq
+      (bookmark) => String(bookmark.contentId) === String(contentId)
     );
     setBookmarked(isBookmarked);
-  }, [userBookmarks, placeSeq]);
+  }, [userBookmarks, contentId]);
 
   const handleLike = async (e) => {
     e.preventDefault();
@@ -75,16 +79,16 @@ const PlaceCard = ({
 
     try {
       console.log('Current Likes:', currentLikes, typeof currentLikes);
-      const updatedLikeYn = await likePlace(placeSeq, accessToken);
+      const updatedLikeYn = await likePlace(contentId, accessToken);
 
       if (updatedLikeYn === 'Y') {
         setCurrentLikes((prevLikes) => prevLikes + 1);
         setLiked(true);
-        updatePlaceLikes(placeSeq, true);
+        updatePlaceLikes(contentId, true);
       } else if (updatedLikeYn === 'N') {
         setCurrentLikes((prevLikes) => prevLikes - 1);
         setLiked(false);
-        updatePlaceLikes(placeSeq, false);
+        updatePlaceLikes(contentId, false);
       }
 
       setAnimate(true);
@@ -94,28 +98,31 @@ const PlaceCard = ({
     }
   };
 
+  // 3. handleBookmark 함수 내에서 UI 즉시 변경 + 서버 호출 + 실패 시 롤백
   const handleBookmark = async (e) => {
     e.preventDefault();
-    e.stopPropagation(); // 이벤트 전파 막기
-    const accessToken = sessionStorage.getItem('accessToken');
+    e.stopPropagation();
 
+    const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
       navigate('/users/login');
       return;
     }
 
+    const nextBookmarked = !bookmarked;
+    setBookmarked(nextBookmarked); // UI 즉시 토글
+
     try {
-      if (bookmarked) {
-        await removeBookmark(placeSeq, accessToken);
-        setBookmarked(false);
+      if (nextBookmarked) {
+        await addBookmark(contentId, accessToken);
       } else {
-        await addBookmark(placeSeq, accessToken);
-        setBookmarked(true);
+        await removeBookmark(contentId, accessToken);
       }
-      // 북마크 상태 변경 후 새로고침을 통해 최신 상태를 반영
-      fetchUserBookmarks(accessToken);
+      // 서버 상태 반영 필요 시 호출
+      // await fetchUserBookmarks(accessToken);
     } catch (error) {
-      console.error('Error updating bookmark status: ', error);
+      console.error('Error updating bookmark status:', error);
+      setBookmarked(!nextBookmarked); // 실패 시 롤백
     }
   };
 
