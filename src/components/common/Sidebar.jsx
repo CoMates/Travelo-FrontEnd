@@ -39,12 +39,12 @@ const Sidebar = () => {
 
   const handleRegionRadioChange = (e) => {
     setSelectedRegion(e.target.value);
-    updateFilters({ area: e.target.value }); // 필터 업데이트
+    updateFilters({ areaCode: e.target.value }); // 필터 업데이트
   };
 
   const handleTypeRadioChange = (e) => {
     setSelectedType(e.target.value);
-    updateFilters({ content: e.target.value }); // 필터 업데이트
+    updateFilters({ contentTypeId: e.target.value }); // 필터 업데이트
   };
 
   const handleReset = () => {
@@ -312,6 +312,26 @@ const Sidebar = () => {
               onChange={handleTypeRadioChange}
             />
             <span></span> 문화시설
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="type"
+              value="15"
+              checked={selectedType === '15'}
+              onChange={handleTypeRadioChange}
+            />
+            <span></span> 축제공연행사
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="type"
+              value="25"
+              checked={selectedType === '25'}
+              onChange={handleTypeRadioChange}
+            />
+            <span></span> 여행코스
           </label>
           <label>
             <input

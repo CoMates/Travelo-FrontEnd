@@ -12,30 +12,28 @@ const PlaceProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dropdownTitle, setDropdownTitle] = useState('인기순');
+
+  // 필터
   const [filters, setFilters] = useState({
-    item: 15,
-    page: 0,
-    keyword: '',
-    sorts: 'popular',
-    content: '',
-    area: '',
-  });
-  const [placeRequires, setPlaceRequires] = useState({
     numOfRows: 15,
     pageNo: 0,
     MobileOS: 'WEB',
     MobileApp: 'travelo',
     arrange: 'A',
+    // sorts: 'popular',
+    // content: '',
+    // area: '',
+    // keyword: '',
   });
-  const placeContentTypes = [12, 14, 32, 38, 39];
+
+  const placeContentTypes = [12, 14, 15, 25, 28, 32, 38, 39];
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const fetchPlaces = async (updatedFilters) => {
-    console.log('serviceKey:', tourAPIKey);
-
+  const fetchPlaces = async (additionalParams = {}) => {
     const params = {
-      ...placeRequires,
+      ...filters,
+      ...additionalParams,
       serviceKey: tourAPIKey,
       _type: 'json',
     };
@@ -43,35 +41,42 @@ const PlaceProvider = ({ children }) => {
     console.log('params:', params);
     setLoading(true);
     try {
-      const response = await axiosInstanceTour.get('areaBasedList2', {
-        params,
-      });
-      setPlaces(response.data.response.body.items.item);
-      setTotalPages(response.data.response.body.totalCount);
+      console.log('params2:', params);
+
+      let response;
+
+      if (additionalParams.keyword?.trim() && additionalParams.keyword !== '') {
+        response = await axiosInstanceTour.get('searchKeyword2', {
+          params,
+        });
+        console.log('이거 실행?');
+      } else {
+        response = await axiosInstanceTour.get('areaBasedList2', {
+          params,
+        });
+        console.log('키워드없음');
+      }
+
+      const responseData = response.data.response;
+
+      console.log('response', responseData);
+      console.log('responsessss', response);
+
+      if (responseData == undefined) {
+        return;
+      }
+
+      setPlaces(responseData.body.items.item);
+      console.log(responseData.body.items.item);
+      const totalCount = responseData.body.totalCount;
+      const calculatedTotalPages = Math.ceil(totalCount / filters.numOfRows);
+      setTotalPages(calculatedTotalPages);
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
     }
   };
-
-  // const fetchPlaces = async (updatedFilters) => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axiosInstance.get('/travelo/place/list', {
-  //       params: {
-  //         ...filters,
-  //         ...updatedFilters,
-  //       },
-  //     });
-  //     setPlaces(response.data.paging.content);
-  //     setTotalPages(response.data.paging.totalPages);
-  //   } catch (error) {
-  //     setError(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const fetchUserBookmarks = useCallback(async (accessToken) => {
     try {
@@ -87,8 +92,8 @@ const PlaceProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    fetchPlaces({ page: currentPage });
-  }, [currentPage]);
+    fetchPlaces({ pageNo: currentPage + 1 });
+  }, [currentPage + 1]);
 
   const handleDropdownClick = (title) => {
     setDropdownTitle(title);
@@ -100,7 +105,6 @@ const PlaceProvider = ({ children }) => {
       const updatedFilters = {
         ...prevFilters,
         ...newFilters,
-        page: 0,
       };
       fetchPlaces(updatedFilters);
       return updatedFilters;
@@ -110,13 +114,15 @@ const PlaceProvider = ({ children }) => {
 
   const resetFilters = () => {
     const initialFilters = {
-      item: 15,
-      page: 0,
-      keyword: '',
-      sorts: 'popular',
-      content: '',
-      area: '',
+      numOfRows: 15,
+      pageNo: 1,
+      MobileOS: 'WEB',
+      MobileApp: 'travelo',
+      arrange: 'A',
+      areaCode: '',
+      contentTypeId: '',
     };
+
     setFilters(initialFilters);
     setDropdownTitle('인기순');
     setCurrentPage(0);

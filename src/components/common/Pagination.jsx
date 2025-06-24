@@ -10,8 +10,8 @@ import {
 const Pagination = () => {
   const { totalPages, currentPage, setCurrentPage } = useContext(PlaceContext);
 
-  const handlePageClick = (page) => {
-    setCurrentPage(page);
+  const handlePageClick = (pageNo) => {
+    setCurrentPage(pageNo);
   };
 
   const handlePrevClick = () => {
@@ -50,13 +50,13 @@ const Pagination = () => {
       >
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
-      {getPageNumbers().map((page) => (
+      {getPageNumbers().map((pageNo) => (
         <button
-          key={page}
-          className={currentPage === page ? styles.active : ''}
-          onClick={() => handlePageClick(page)}
+          key={pageNo}
+          className={currentPage === pageNo ? styles.active : ''}
+          onClick={() => handlePageClick(pageNo)}
         >
-          {page + 1}
+          {pageNo + 1}
         </button>
       ))}
       <button

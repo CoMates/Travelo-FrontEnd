@@ -16,34 +16,42 @@ const ListContent = () => {
 
   return (
     <div className={styles['list-content']}>
-      <div className={styles['dropdown-wrap']}>
-        <div className={styles['dropdown']}>
-          <div className={styles['dropdown-btn']}>
-            {dropdownTitle} <FontAwesomeIcon icon={faChevronDown} />
+      {places && places.length > 0 ? (
+        <>
+          <div className={styles['dropdown-wrap']}>
+            <div className={styles['dropdown']}>
+              <div className={styles['dropdown-btn']}>
+                {dropdownTitle} <FontAwesomeIcon icon={faChevronDown} />
+              </div>
+              <div className={styles['dropdown-content']}>
+                <a onClick={() => handleDropdownClick('인기순')}>인기순</a>
+                <a onClick={() => handleDropdownClick('최신순')}>최신순</a>
+              </div>
+            </div>
           </div>
-          <div className={styles['dropdown-content']}>
-            <a onClick={() => handleDropdownClick('인기순')}>인기순</a>
-            <a onClick={() => handleDropdownClick('최신순')}>최신순</a>
-          </div>
+          {places.map((place) => (
+            <PlaceCard
+              key={place.contentid}
+              placeSeq={place.contentid}
+              contentId={place.contentid}
+              image={place.firstimage || place.firstimage2 || ''}
+              type={place.contenttypeid}
+              title={place.title}
+              address={place.addr1}
+              views={place.viewCount}
+              likes={place.likeCount}
+              bookmarks={place.bookmarks || 0}
+              latitude={place.mapx}
+              longitude={place.mapy}
+            />
+          ))}
+          <Pagination />
+        </>
+      ) : (
+        <div>
+          <p>검색 결과가 없습니다.</p>
         </div>
-      </div>
-      {places.map((place) => (
-        <PlaceCard
-          key={place.contentid}
-          placeSeq={place.contentid}
-          contentId={place.contentid}
-          image={place.firstimage || place.firstimage2 || ''}
-          type={place.contenttypeid}
-          title={place.title}
-          address={place.addr1}
-          views={place.viewCount}
-          likes={place.likeCount}
-          bookmarks={place.bookmarks || 0}
-          latitude={place.mapx}
-          longitude={place.mapy}
-        />
-      ))}
-      <Pagination />
+      )}
     </div>
   );
 };
