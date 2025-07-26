@@ -5,12 +5,14 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/effect-fade';
 import styles from '../styles/HomePage.module.css';
-import axiosInstance from '../utils/axiosInstance';
+import axiosInstance, { axiosInstanceTour } from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { Autoplay, EffectFade, Navigation } from 'swiper/modules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+
+const tourAPIKey = import.meta.env.VITE_API_TOUR_KEY;
 
 const HomePage = () => {
   const [data, setData] = useState({
@@ -19,6 +21,8 @@ const HomePage = () => {
   });
 
   const [place, setPlace] = useState(null);
+
+  const [imageUrl, setImageUrl] = useState('');
 
   const navigate = useNavigate();
 
@@ -35,19 +39,24 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const url = `http://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=${tourAPIKey}&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&listYN=Y&arrange=A&contentTypeId=12&keyword=%EA%B0%95%EC%9B%90&_type=json`;
+
       try {
-        const response = await axios.get(
-          'http://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=6UppuGjdlACs04jaoy3iLUHIwin6rimEc2uryR%2Bpkh3DKGfD84CjXt%2F4IxcWe3SIvVGMkhaSPG5jmpnI7StFag%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&listYN=Y&&arrange=A&contentTypeId=12&keyword=%EA%B0%95%EC%9B%90&_type=json'
-        );
-        console.log('작동1');
-        console.log(response.data);
-        console.log('작동');
+        const response = await axios.get(url);
+        console.log('response', response.data);
         const item = response.data.response.body.items.item[0];
-        console.log(response);
-        console.log(item);
-        console.log(item.title);
         setPlace(item);
-        console.log(place.title);
+
+        const courseResponse = await axiosInstance.get('/travelo/main');
+        console.log(courseResponse);
+        console.log('courseResponse', courseResponse.data.courses);
+        setData(() => ({
+          places: response.data.response.body.items.item,
+        }));
+        setData((prevData) => ({
+          ...prevData,
+          courses: courseResponse.data.courses,
+        }));
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -55,12 +64,42 @@ const HomePage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const courseImage = async () => {
+      const contentId = data.courses?.courseList?.contentId;
+      const params = {
+        serviceKey: tourAPIKey,
+        contentId: contentId,
+        pageNo: 0,
+        MobileOS: 'WEB',
+        MobileApp: 'travelo',
+        arrange: 'A',
+      };
+      try {
+        const courseImageResponse = await axiosInstanceTour.get(
+          'detailCommon2',
+          {
+            params,
+          }
+        );
+        const courseImageUrl =
+          courseImageResponse.data.response.items.item[0].firstimage;
+        if (courseImageUrl) setImageUrl(courseImageUrl);
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+      if (contentId) {
+        courseImage(contentId);
+      }
+    };
+  }, [data.courses?.courseList?.contentId]);
+
   const handlePlaceClick = (place) => {
     navigate(`/places/${place.placeSeq}`, {
       state: {
         type: place.type,
         contentId: place.contentId,
-        image: place.imageFile1,
+        image: place.firstimage,
         title: place.title,
         address: place.address,
         views: place.viewCount,
@@ -83,7 +122,7 @@ const HomePage = () => {
         createDate: course.createDate,
         areaCode: course.areaCode,
         images: course.courseList
-          .map((item) => item.place.imageFile1)
+          .map((item) => item.place.firstimage)
           .filter(Boolean),
       },
     });
@@ -114,24 +153,13 @@ const HomePage = () => {
               className={`${styles.mainVisualSlide} ${styles.mainVisualSlideRed}`}
             >
               <h1 className={styles.mainTitle}>Travelo</h1>
-              <p className={styles.subTitle}>트래블로로 쉽게 여행가자</p>
+              <p className={styles.subTitle}>트래블로로 쉽게 여행가자!</p>
             </div>
           </SwiperSlide>
         </Swiper>
 
-        <div>
-          <h2>
-            <p>테스트</p>
-          </h2>
-          {/* <p>{place.title}</p>
-          <img
-            src={place.firstimage}
-            alt={place.title}
-            style={{ maxWidth: '100%' }}
-          /> */}
-        </div>
-
         {/* 인기 장소 */}
+        {/* 임시로 제일 처음 나오는 장소 띄워놓은 상태 */}
         <h2>
           <p>&#x2728;</p> 지금 주목받는 인기 장소
         </h2>
@@ -142,13 +170,13 @@ const HomePage = () => {
           modules={[Autoplay]}
           className={styles.swiper}
         >
-          {/* {data.places.slice(0, 6).map((place, index) => (
+          {data.places.slice(0, 6).map((place, index) => (
             <SwiperSlide key={index} onClick={() => handlePlaceClick(place)}>
               <div className={styles.placeSlide}>
                 <div className={styles.placeImageContainer}>
-                  {place.imageFile1 ? (
+                  {place.firstimage ? (
                     <img
-                      src={place.imageFile1}
+                      src={place.firstimage}
                       alt={place.title}
                       className={styles.placeImage}
                     />
@@ -168,9 +196,9 @@ const HomePage = () => {
                 </div>
               </div>
             </SwiperSlide>
-          ))} */}
+          ))}
         </Swiper>
-
+        {/* 인기 코스 */}
         <div className={styles.hc}>
           <h2>
             <p>&#x2B50;</p> 유저들이 선정한 인기코스
@@ -182,7 +210,7 @@ const HomePage = () => {
             modules={[Autoplay]}
             className={styles.swiper}
           >
-            {/* {data.courses.slice(0, 6).map((course, index) => (
+            {data.courses.slice(0, 6).map((course, index) => (
               <SwiperSlide
                 key={index}
                 onClick={() => handleCourseClick(course)}
@@ -193,9 +221,9 @@ const HomePage = () => {
                       <div className={styles['image-grid']}>
                         {course.courseList.slice(0, 4).map((item, imgIndex) => (
                           <div key={imgIndex} className={styles['image-item']}>
-                            {item.place.imageFile1 ? (
+                            {item.courseList ? (
                               <img
-                                src={item.place.imageFile1}
+                                src={imageUrl}
                                 alt={`course-img-${imgIndex}`}
                                 className={styles.image}
                               />
@@ -231,10 +259,9 @@ const HomePage = () => {
                   </div>
                 </div>
               </SwiperSlide>
-            ))} */}
+            ))}
           </Swiper>
         </div>
-        {/* 인기 코스 */}
       </main>
     </div>
   );

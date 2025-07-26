@@ -43,6 +43,7 @@ const PlaceProvider = ({ children }) => {
     try {
       console.log('params2:', params);
 
+      //api 요청 분기에 따른... 문제가 있는 것으로 예상
       let response;
 
       if (additionalParams.keyword?.trim() && additionalParams.keyword !== '') {
