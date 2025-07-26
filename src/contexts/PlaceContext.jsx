@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 import axiosInstance, { axiosInstanceTour } from '../utils/axiosInstance';
 import { fetchBookmarks } from '../services/bookmarkService';
+import * as hangul from 'hangul-js';
 
 const tourAPIKey = import.meta.env.VITE_API_TOUR_API_KEY;
 
@@ -45,18 +46,39 @@ const PlaceProvider = ({ children }) => {
 
       //api 요청 분기에 따른... 문제가 있는 것으로 예상
       let response;
+      //완성된 한글인지 판단
 
-      if (additionalParams.keyword?.trim() && additionalParams.keyword !== '') {
-        response = await axiosInstanceTour.get('searchKeyword2', {
-          params,
-        });
-        console.log('이거 실행?');
-      } else {
-        response = await axiosInstanceTour.get('areaBasedList2', {
-          params,
-        });
-        console.log('키워드없음');
+      //아무것도 없음: false, ㄱ: false, 가: true
+
+      // if (additionalParams.keyword?.trim() && additionalParams.keyword !== '') {
+      //   response = await axiosInstanceTour.get('searchKeyword2', {
+      //     params,
+      //   });
+      //   console.log('이거 실행?');
+      // } else {
+      //   response = await axiosInstanceTour.get('areaBasedList2', {
+      //     params,
+      //   });
+      //   console.log('키워드없음');
+      // }
+
+      // react.memo를 사용하는 게 좋아보임.
+      console.log('typeofkeyword', typeof additionalParams.keyword);
+
+      if (!additionalParams.keyword || additionalParams.keyword.trim() === '') {
+        additionalParams.keyword = '가';
       }
+
+      const isComplete = hangul.isComplete(additionalParams.keyword);
+      console.log('keyword내용', additionalParams.keyword);
+      console.log('iscomplete', isComplete);
+
+      if (!isComplete) {
+        return;
+      }
+      response = await axiosInstanceTour.get('searchKeyword2', {
+        params,
+      });
 
       const responseData = response.data.response;
 

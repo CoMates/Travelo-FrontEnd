@@ -22,7 +22,7 @@ const Sidebar = () => {
 
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedType, setSelectedType] = useState('');
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState([]);
 
   const toggleRegion = () => {
     setIsRegionExpanded(!isRegionExpanded);
@@ -62,6 +62,7 @@ const Sidebar = () => {
           placeholder="키워드를 입력해주세요"
           className={styles['search-input']}
           value={keyword}
+          defaultValue={[]}
           onChange={handleKeywordInputChange}
         />
         <FontAwesomeIcon icon={faSearch} className={styles['search-icon']} />
